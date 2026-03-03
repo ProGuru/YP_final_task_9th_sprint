@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -12,6 +14,17 @@ const (
 // generateRandomElements generates random elements.
 func generateRandomElements(size int) []int {
 	// ваш код здесь
+	if size == 0 {
+		return nil
+	}
+	src := rand.NewSource(time.Now().Unix())
+
+	randomElements := make([]int, size)
+	for i := 0; i < size; i++ {
+		randomElements = append(randomElements, int(src.Int63()))
+	}
+
+	return randomElements
 }
 
 // maximum returns the maximum number of elements.
