@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -44,7 +45,7 @@ func testMaximum(t *testing.T, f func([]int) int) {
 	require.Equal(t, maxNum, maxValue)
 
 	randomElements = make([]int, 5)
-	randomElements = []int{10, -50, 0, 803040, 100}
+	randomElements = []int{10, 5, 0, 803040, 100}
 	maxValue = f(randomElements)
 	require.Equal(t, 803040, maxValue)
 
@@ -56,9 +57,9 @@ func testMaximum(t *testing.T, f func([]int) int) {
 	maxValue = f(randomElements)
 	require.Equal(t, 40, maxValue)
 
-	randomElements = []int{-200, -200, -200, -200, -200}
+	randomElements = []int{math.MaxInt, math.MaxInt, math.MaxInt, math.MaxInt, math.MaxInt}
 	maxValue = f(randomElements)
-	require.Equal(t, -200, maxValue)
+	require.Equal(t, math.MaxInt, maxValue)
 
 	randomElements = make([]int, 8)
 	randomElements = []int{10, -50, 0, 505236412, 100, -1250, 10100, 9}

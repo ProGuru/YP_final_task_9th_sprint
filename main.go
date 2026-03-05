@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"slices"
 	"sync"
 	"time"
 )
@@ -35,7 +34,14 @@ func maximum(data []int) int {
 	if len(data) == 0 {
 		return 0
 	}
-	return slices.Max(data)
+
+	max := 0
+	for _, m := range data {
+		if m > max {
+			max = m
+		}
+	}
+	return max
 }
 
 // maxChunks returns the maximum number of elements in a chunks.
@@ -58,27 +64,42 @@ func maxChunks(data []int) int {
 	maxValuesFromChunk := make([]int, chunk)
 
 	wg.Add(chunk)
-	for i := 1; i <= chunk; i++ {
+	for i := 0; i < chunk; i++ {
 		// создайте переменную типа sync.WaitGroup и используйте её при запуске и ожидании горутин
 
 		var clip []int
 		switch i {
-		case chunk:
-			clip = data[chunkSize*(i-1):]
+		case chunk - 1:
+			clip = data[chunkSize*i:]
 		default:
-			clip = data[chunkSize*(i-1) : chunkSize*i]
+			clip = data[chunkSize*i : chunkSize*(i+1)]
 		}
 
 		go func(idx int, newClip []int) {
 			defer wg.Done()
-			maxFromChunk := slices.Max(newClip)
-			maxValuesFromChunk[idx-1] = maxFromChunk
+
+			maxFromChunk := 0
+			for _, m := range clip {
+				if m > maxFromChunk {
+					maxFromChunk = m
+				}
+			}
+
+			maxValuesFromChunk[idx] = maxFromChunk
 		}(i, clip)
 	}
 
 	wg.Wait()
 	// находим среди 8-ми максимальных значений максимум
-	return slices.Max(maxValuesFromChunk)
+
+	max := 0
+	for _, m := range maxValuesFromChunk {
+		if m > max {
+			max = m
+		}
+	}
+
+	return max
 }
 
 func main() {
