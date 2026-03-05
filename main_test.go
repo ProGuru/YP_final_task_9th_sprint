@@ -59,4 +59,14 @@ func testMaximum(t *testing.T, f func([]int) int) {
 	randomElements = []int{-200, -200, -200, -200, -200}
 	maxValue = f(randomElements)
 	require.Equal(t, -200, maxValue)
+
+	randomElements = make([]int, 8)
+	randomElements = []int{10, -50, 0, 505236412, 100, -1250, 10100, 9}
+	maxValue = f(randomElements)
+	require.Equal(t, 505236412, maxValue)
+
+	randomElements = make([]int, 15)
+	randomElements = []int{12, -7, 45, 0, -100, 234, 89, -3, 678, 1, -56, 999, 2, -456, 3001}
+	maxValue = f(randomElements)
+	require.Equal(t, 3001, maxValue)
 }
