@@ -13,37 +13,50 @@ func TestGenerateRandomElements(t *testing.T) {
 	randomElements = generateRandomElements(0)
 	require.Nil(t, randomElements)
 
-	var sumElements int = 12345
-	randomElements = generateRandomElements(sumElements)
+	numElements := 12345
+	randomElements = generateRandomElements(numElements)
 	require.NotNil(t, randomElements)
-	require.Len(t, len(randomElements), sumElements)
+	require.Len(t, randomElements, numElements)
 }
 
-func TestMaximum(t *testing.T) {
+// для нашего случая неплохо подошли бы параметризованные тесты, чтобы не дублировать один и тот же код
+func TestMaxFunctions(t *testing.T) {
+	t.Run("maximum", func(t *testing.T) {
+		t.Parallel()
+		testMaximum(t, maximum)
+	})
+	t.Run("maxChunks", func(t *testing.T) {
+		t.Parallel()
+		testMaximum(t, maxChunks)
+	})
+}
+
+// в параметры добавим общую для maximum и для maxChunks сигнатуру функции: f func([]int) int
+func testMaximum(t *testing.T, f func([]int) int) {
 	randomElements = make([]int, 0)
-	maxValue := maximum(randomElements)
+	maxValue := f(randomElements)
 	require.Zero(t, maxValue)
 
 	randomElements = make([]int, 1)
 	maxNum := 50
 	randomElements[0] = maxNum
-	maxValue = maximum(randomElements)
+	maxValue = f(randomElements)
 	require.Equal(t, maxNum, maxValue)
 
 	randomElements = make([]int, 5)
 	randomElements = []int{10, -50, 0, 803040, 100}
-	maxValue = maximum(randomElements)
+	maxValue = f(randomElements)
 	require.Equal(t, 803040, maxValue)
 
 	randomElements = []int{0, 0, 0, 0, 0}
-	maxValue = maximum(randomElements)
+	maxValue = f(randomElements)
 	require.Equal(t, 0, maxValue)
 
 	randomElements = []int{40, 40, 40, 40, 40}
-	maxValue = maximum(randomElements)
+	maxValue = f(randomElements)
 	require.Equal(t, 40, maxValue)
 
 	randomElements = []int{-200, -200, -200, -200, -200}
-	maxValue = maximum(randomElements)
+	maxValue = f(randomElements)
 	require.Equal(t, -200, maxValue)
 }

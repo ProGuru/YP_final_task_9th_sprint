@@ -22,7 +22,7 @@ func generateRandomElements(size int) []int {
 	src := rand.NewSource(time.Now().Unix())
 
 	randomElements := make([]int, size)
-	for i := 0; i < size; i++ {
+	for i := range size {
 		randomElements[i] = int(src.Int63())
 	}
 
